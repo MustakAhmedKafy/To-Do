@@ -1,8 +1,9 @@
 <script setup>
 import { ref } from "vue";
 const tasks = ref([
-  { name: "Movie", status: "Pending" },
-  { name: "Coding", status: "Done" },
+  { name: "Movie", status: "Pending", priority: "high" },
+  { name: "Coding", status: "Done", priority: "medium" },
+  { name: "Coding", status: "Not Started", priority: "low" },
 
   // Add more tasks as needed
 ]);
@@ -10,6 +11,15 @@ const tasks = ref([
 // Define a function to get the status class based on the task status
 const getStatusClass = (status) => {
   return status === "Pending"
+    ? "badge text-bg-warning"
+    : status ==="Not Started"
+     ? "badge text-bg-secondary"
+    : "badge text-bg-success";
+};
+const getPriorityClass = (priority) => {
+  return priority === "high"
+    ? "badge text-bg-danger"
+    : priority === "medium"
     ? "badge text-bg-warning"
     : "badge text-bg-success";
 };
@@ -51,15 +61,27 @@ const deleteTask = (index) => {
             <tr>
               <th scope="col">List</th>
               <th scope="col">Status</th>
+              <th scope="col">Priority</th>
               <th scope="col">Activity</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(task, index) in tasks" :key="index">
-              <th scope="row">{{ task.name }}</th>
+              <th scope="row">
+                {{ task.name }}
+                <p>
+                  <span class="badge text-bg-primary">start</span>
+                  <span class="badge text-bg-success ms-2">Done</span>
+                </p>
+              </th>
               <td>
                 <span :class="getStatusClass(task.status)">{{
                   task.status
+                }}</span>
+              </td>
+              <td>
+                <span :class="getPriorityClass(task.priority)">{{
+                  task.priority
                 }}</span>
               </td>
               <td>
@@ -128,5 +150,8 @@ const deleteTask = (index) => {
 }
 .card {
   margin-top: -65px;
+}
+tr{
+  vertical-align: middle;
 }
 </style>
