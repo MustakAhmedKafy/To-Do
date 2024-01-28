@@ -3,6 +3,7 @@ import { ref } from "vue";
 const tasks = ref([
   { name: "Movie", status: "Pending", priority: "high" },
   { name: "Coding", status: "Done", priority: "medium" },
+  { name: "Coding", status: "Paused", priority: "low" },
   { name: "Coding", status: "Not Started", priority: "low" },
 
   // Add more tasks as needed
@@ -12,10 +13,14 @@ const tasks = ref([
 const getStatusClass = (status) => {
   return status === "Pending"
     ? "badge text-bg-warning"
-    : status ==="Not Started"
-     ? "badge text-bg-secondary"
+    : status === "Not Started"
+    ? "badge text-bg-dark"
+    : status === "Paused"
+    ? "badge text-bg-secondary"
     : "badge text-bg-success";
 };
+
+// Priority
 const getPriorityClass = (priority) => {
   return priority === "high"
     ? "badge text-bg-danger"
@@ -28,6 +33,13 @@ const getPriorityClass = (priority) => {
 const editTask = (index) => {
   // Handle edit task functionality
   console.log("Edit task:", tasks.value[index]);
+};
+
+
+// update status
+
+const updateStatus = (index, newStatus) => {
+  tasks.value[index].status = newStatus;
 };
 
 // Define a function to delete a task
@@ -50,6 +62,15 @@ const deleteTask = (index) => {
         placeholder="What would you like to do?"
         aria-describedby="basic-addon1"
       />
+      <select
+        class="form-select mt-3 w-50 rounded-pill"
+        aria-label="Default select example"
+      >
+        <option selected>Priority</option>
+        <option value="1">High</option>
+        <option value="2">Medium</option>
+        <option value="3">Low</option>
+      </select>
       <button class="btn btn-primary w-25 mt-3">Add</button>
     </div>
   </div>
@@ -70,8 +91,21 @@ const deleteTask = (index) => {
               <th scope="row">
                 {{ task.name }}
                 <p>
-                  <span class="badge text-bg-primary">start</span>
-                  <span class="badge text-bg-success ms-2">Done</span>
+                  <span
+                    class="badge text-bg-primary"
+                    @click="updateStatus(index, 'Pending')"
+                    >start</span
+                  >
+                  <span
+                    class="badge text-bg-secondary ms-2"
+                    @click="updateStatus(index, 'Paused')"
+                    >Paused</span
+                  >
+                  <span
+                    class="badge text-bg-success ms-2"
+                    @click="updateStatus(index, 'Done')"
+                    >Done</span
+                  >
                 </p>
               </th>
               <td>
@@ -151,7 +185,7 @@ const deleteTask = (index) => {
 .card {
   margin-top: -65px;
 }
-tr{
+tr {
   vertical-align: middle;
 }
 </style>
