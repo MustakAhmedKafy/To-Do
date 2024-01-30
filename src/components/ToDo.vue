@@ -5,9 +5,26 @@ const tasks = ref([
   { name: "Coding", status: "Done", priority: "medium" },
   { name: "Coding", status: "Paused", priority: "low" },
   { name: "Coding", status: "Not Started", priority: "low" },
-
-  // Add more tasks as needed
 ]);
+
+const priorities = ref([
+  { value: "1", label: "High" },
+  { value: "2", label: "Medium" },
+  { value: "3", label: "Low" },
+]);
+
+const newTaskName = ref("");
+const newPriority = ref("");
+
+// task add
+const addTask = () => {
+  tasks.value.push({
+    name: newTaskName.value,
+    status: "Not Started", // Add the status property
+    priority: newPriority.value,
+  });
+  resetForm();
+};
 
 // Define a function to get the status class based on the task status
 const getStatusClass = (status) => {
@@ -35,7 +52,6 @@ const editTask = (index) => {
   console.log("Edit task:", tasks.value[index]);
 };
 
-
 // update status
 
 const updateStatus = (index, newStatus) => {
@@ -54,6 +70,8 @@ const deleteTask = (index) => {
   <section class="banner text-center text-white">
     <h1>Todo List</h1>
   </section>
+
+  <!-- add task start -->
   <div class="container">
     <div class="card text-center d-flex align-items-center p-3 border-0 shadow">
       <input
@@ -61,19 +79,22 @@ const deleteTask = (index) => {
         class="form-control w-50 border-0 rounded-pill"
         placeholder="What would you like to do?"
         aria-describedby="basic-addon1"
+        v-model="newTaskName"
       />
       <select
+        v-model="newPriority"
         class="form-select mt-3 w-50 rounded-pill"
         aria-label="Default select example"
       >
-        <option selected>Priority</option>
-        <option value="1">High</option>
-        <option value="2">Medium</option>
-        <option value="3">Low</option>
+        <option v-for="priority in priorities" :value="priority.value">
+          {{ priority.label }}
+        </option>
       </select>
-      <button class="btn btn-primary w-25 mt-3">Add</button>
+      <button @click="addTask" class="btn btn-primary w-25 mt-3">Add</button>
     </div>
   </div>
+  <!-- add task end -->
+
   <div class="container py-5 my-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
