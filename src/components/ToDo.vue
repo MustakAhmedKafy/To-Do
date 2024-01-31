@@ -86,7 +86,7 @@ const deleteTask = (index) => {
         class="form-select mt-3 w-50 rounded-pill"
         aria-label="Default select example"
       >
-        <option v-for="priority in priorities" :value="priority.value">
+        <option v-for="priority in priorities" :value="priority.label">
           {{ priority.label }}
         </option>
       </select>
@@ -104,7 +104,7 @@ const deleteTask = (index) => {
               <th scope="col">List</th>
               <th scope="col">Status</th>
               <th scope="col">Priority</th>
-              <th scope="col">Activity</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -129,16 +129,20 @@ const deleteTask = (index) => {
                   >
                 </p>
               </th>
+              <!-- status -->
               <td>
                 <span :class="getStatusClass(task.status)">{{
                   task.status
                 }}</span>
               </td>
+              <!-- priority -->
               <td>
                 <span :class="getPriorityClass(task.priority)">{{
                   task.priority
                 }}</span>
               </td>
+
+              <!-- action -->
               <td>
                 <span class="text-info" @click="editTask(index)">
                   <svg
