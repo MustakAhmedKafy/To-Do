@@ -1,17 +1,18 @@
 <script setup>
 import { ref } from "vue";
 const tasks = ref([
-  { name: "Movie", status: "Pending", priority: "high" },
-  { name: "Coding", status: "Done", priority: "medium" },
-  { name: "Coding", status: "Paused", priority: "low" },
-  { name: "Coding", status: "Not Started", priority: "low" },
+  { name: "Movie", status: "Pending", priority: "1" },
+  { name: "Coding", status: "Done", priority: "2" },
+  { name: "Coding", status: "Paused", priority: "3" },
+  { name: "Coding", status: "Not Started", priority: "3" },
+  { name: "Walking", status: "Not Started", priority: "1" },
 ]);
 
-const priorities = ref([
-  { value: "1", label: "High" },
-  { value: "2", label: "Medium" },
-  { value: "3", label: "Low" },
-]);
+const priorities = ref({
+  1: "High",
+  2: "Medium",
+  3: "Low",
+});
 
 const newTaskName = ref("");
 const newPriority = ref("");
@@ -39,9 +40,9 @@ const getStatusClass = (status) => {
 
 // Priority
 const getPriorityClass = (priority) => {
-  return priority === "high"
+  return priority === "1"
     ? "badge text-bg-danger"
-    : priority === "medium"
+    : priority === "2"
     ? "badge text-bg-warning"
     : "badge text-bg-success";
 };
@@ -86,8 +87,8 @@ const deleteTask = (index) => {
         class="form-select mt-3 w-50 rounded-pill"
         aria-label="Default select example"
       >
-        <option v-for="priority in priorities" :value="priority.label">
-          {{ priority.label }}
+        <option v-for="(priority, label) in priorities" :value="label">
+          {{ priority }}
         </option>
       </select>
       <button @click="addTask" class="btn btn-primary w-25 mt-3">Add</button>
@@ -138,7 +139,7 @@ const deleteTask = (index) => {
               <!-- priority -->
               <td>
                 <span :class="getPriorityClass(task.priority)">{{
-                  task.priority
+                  priorities[task.priority]
                 }}</span>
               </td>
 
