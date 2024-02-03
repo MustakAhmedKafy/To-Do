@@ -49,19 +49,11 @@ const getPriorityClass = (priority) => {
 
 // Define a function to edit a task
 const editTask = (index) => {
-  // Handle edit task functionality
   console.log("Edit task:", tasks.value[index]);
-};
-
-// update status
-
-const updateStatus = (index, newStatus) => {
-  tasks.value[index].status = newStatus;
 };
 
 // Define a function to delete a task
 const deleteTask = (index) => {
-  // Handle delete task functionality
   console.log("Delete task:", tasks.value[index]);
   tasks.value.splice(index, 1);
 };
@@ -114,16 +106,19 @@ const deleteTask = (index) => {
                 {{ task.name }}
                 <p>
                   <span
+                    v-if="task.status !== 'Done'"
                     class="badge text-bg-primary"
                     @click="updateStatus(index, 'Pending')"
                     >start</span
                   >
                   <span
+                    v-if="task.status !== 'Done'"
                     class="badge text-bg-secondary ms-2"
                     @click="updateStatus(index, 'Paused')"
                     >Paused</span
                   >
                   <span
+                    v-if="task.status !== 'Done'"
                     class="badge text-bg-success ms-2"
                     @click="updateStatus(index, 'Done')"
                     >Done</span
