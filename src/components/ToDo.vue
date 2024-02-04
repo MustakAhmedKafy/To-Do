@@ -57,6 +57,10 @@ const deleteTask = (index) => {
   console.log("Delete task:", tasks.value[index]);
   tasks.value.splice(index, 1);
 };
+
+const updateStatus = (index, newStatus) => {
+  tasks.value[index].status = newStatus;
+};
 </script>
 
 <template>
