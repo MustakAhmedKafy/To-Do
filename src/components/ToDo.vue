@@ -108,25 +108,35 @@ const updateStatus = (index, newStatus) => {
             <tr v-for="(task, index) in tasks" :key="index">
               <th scope="row">
                 {{ task.name }}
-                <p>
-                  <span
+                <p class="updateWork">
+                  <button
                     v-if="task.status !== 'Done'"
                     class="badge text-bg-primary"
                     @click="updateStatus(index, 'Pending')"
-                    >start</span
                   >
-                  <span
+                    Start
+                  </button>
+                  <button
                     v-if="task.status !== 'Done'"
                     class="badge text-bg-secondary ms-2"
                     @click="updateStatus(index, 'Paused')"
-                    >Paused</span
                   >
-                  <span
+                    Paused
+                  </button>
+                  <button
+                    v-if="task.status === 'Done'"
+                    class="badge text-bg-success ms-2 disabled"
+                    disabled
+                  >
+                    Done
+                  </button>
+                  <button
                     v-if="task.status !== 'Done'"
                     class="badge text-bg-success ms-2"
                     @click="updateStatus(index, 'Done')"
-                    >Done</span
                   >
+                    End Task
+                  </button>
                 </p>
               </th>
               <!-- status -->
@@ -212,5 +222,10 @@ const updateStatus = (index, newStatus) => {
 }
 tr {
   vertical-align: middle;
+}
+.updateWork{
+  button{
+    border: 0px;
+  }
 }
 </style>
