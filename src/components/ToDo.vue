@@ -17,6 +17,12 @@ const priorities = ref({
 const newTaskName = ref("");
 const newPriority = ref("");
 
+const editingTaskName = ref("");
+const editingPriority = ref("");
+const editingIndex = ref(null);
+
+const isModalOpen = ref(false);
+
 // task add
 const addTask = () => {
   tasks.value.push({
@@ -49,9 +55,17 @@ const getPriorityClass = (priority) => {
 
 // Define a function to edit a task
 const editTask = (index) => {
-  // Set the newTaskName and newPriority values to the values of the task being edited
-  newTaskName.value = tasks.value[index].name;
-  newPriority.value = tasks.value[index].priority;
+  editingIndex.value = index;
+  editingTaskName.value = tasks.value[index].name;
+  editingPriority.value = tasks.value[index].priority;
+  isModalOpen.value = true; // Open the modal
+};
+
+const saveEditedTask = () => {
+  const index = editingIndex.value;
+  tasks.value[index].name = editingTaskName.value;
+  tasks.value[index].priority = editingPriority.value;
+  isModalOpen.value = false; // Close the modal
 };
 
 // Define a function to delete a task
@@ -60,6 +74,7 @@ const deleteTask = (index) => {
   tasks.value.splice(index, 1);
 };
 
+// update task status
 const updateStatus = (index, newStatus) => {
   tasks.value[index].status = newStatus;
 };
@@ -180,71 +195,7 @@ const updateStatus = (index, newStatus) => {
                     />
                   </svg>
                 </span>
-                <!--edit task Modal start-->
-                <div
-                  class="modal fade"
-                  id="staticBackdrop"
-                  data-bs-backdrop="static"
-                  data-bs-keyboard="false"
-                  tabindex="-1"
-                  aria-labelledby="staticBackdropLabel"
-                  aria-hidden="true"
-                >
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">
-                          Edit Task
-                        </h5>
-                        <button
-                          type="button"
-                          class="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"
-                        ></button>
-                      </div>
-                      <div class="modal-body">
-                        <!-- edit task  -->
-                        <input
-                          type="text"
-                          class="form-control border-0 rounded-pill"
-                          placeholder="What would you like to do?"
-                          aria-describedby="basic-addon1"
-                          v-model="newTaskName"
-                        />
-                        <select
-                          v-model="newPriority"
-                          class="form-select mt-3 rounded-pill"
-                          aria-label="Default select example"
-                        >
-                          <option
-                            v-for="(priority, label) in priorities"
-                            :value="label"
-                          >
-                            {{ priority }}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn btn-secondary"
-                          data-bs-dismiss="modal"
-                        >
-                          Close
-                        </button>
-                        <button
-                          @click="editTask(index)"
-                          type="button"
-                          class="btn btn-primary"
-                        >
-                          Edit Task
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!--edit task Modal end-->
+
                 <span class="ps-2 text-danger" @click="deleteTask(index)">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -266,6 +217,70 @@ const updateStatus = (index, newStatus) => {
             </tr>
           </tbody>
         </table>
+        <!--edit task Modal start-->
+        <div
+          class="modal fade"
+          id="staticBackdrop"
+          v-bind:class="{ show: isModalOpen }"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Task</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <!-- edit task  -->
+                <input
+                  type="text"
+                  class="form-control border-0 rounded-pill"
+                  placeholder="What would you like to do?"
+                  aria-describedby="basic-addon1"
+                  v-model="editingTaskName"
+                />
+                <select
+                  v-model="editingPriority"
+                  class="form-select mt-3 rounded-pill"
+                  aria-label="Default select example"
+                >
+                  <option
+                    v-for="(priority, label) in priorities"
+                    :value="label"
+                  >
+                    {{ priority }}
+                  </option>
+                </select>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  @click="saveEditedTask"
+                >
+                  Edit Task
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--edit task Modal end-->
       </div>
     </div>
   </div>
