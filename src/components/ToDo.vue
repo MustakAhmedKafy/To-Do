@@ -58,7 +58,7 @@ const editTask = (index) => {
   editingIndex.value = index;
   editingTaskName.value = tasks.value[index].name;
   editingPriority.value = tasks.value[index].priority;
-  isModalOpen.value = true; // Open the modal
+  isModalOpen.value = true;
 };
 
 const saveEditedTask = () => {
@@ -177,6 +177,7 @@ const updateStatus = (index, newStatus) => {
                   data-bs-toggle="modal"
                   data-bs-target="#staticBackdrop"
                   @click="editTask(index)"
+                  v-if="task.status !== 'Done'"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -221,7 +222,6 @@ const updateStatus = (index, newStatus) => {
         <div
           class="modal fade"
           id="staticBackdrop"
-          v-bind:class="{ show: isModalOpen }"
           data-bs-backdrop="static"
           data-bs-keyboard="false"
           tabindex="-1"
@@ -266,10 +266,13 @@ const updateStatus = (index, newStatus) => {
                   type="button"
                   class="btn btn-secondary"
                   data-bs-dismiss="modal"
+                  data-bs-target="#staticBackdrop"
                 >
                   Close
                 </button>
                 <button
+                  data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop"
                   type="button"
                   class="btn btn-primary"
                   @click="saveEditedTask"
